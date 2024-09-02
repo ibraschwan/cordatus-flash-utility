@@ -1,7 +1,7 @@
 # Cordatus Flashing Utility
 
 ## Overview
-This project provides a utility for flashing a wide range of Jetson devices, ranging from Jetson Nano to Jetson AGX Orin, with support for JetPack versions ranging from 4.6.1 - L4T 32.7.1 up to 5.1.3 - L4T 35.5.0. The utility can flash storage devices including NVMe SSD and Micro SD cards.
+This project provides a utility for flashing a wide range of Jetson devices, ranging from Jetson Nano to Jetson AGX Orin, with support for JetPack versions ranging from 4.6.1 - L4T 32.7.1 up to 6.0 - L4T 36.3. The utility can flash storage devices including NVMe SSD and Micro SD cards.
 
 The utility consists of a Python graphical user interface (GUI) and a Bash script. The GUI allows users to select options from dropdown lists based on vendor, product, module, and JetPack version, making the flashing process intuitive and user-friendly. The Bash script automates the process of downloading, extracting, and flashing a Jetson Linux image to a device, simplifying the overall workflow.
 
