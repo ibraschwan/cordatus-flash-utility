@@ -31,12 +31,12 @@ Follow these steps to flash your Jetson device:
 1. **Clone the Repository**: Clone this repository to your local machine.
 
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/CordatusAI/cordatus-flash-utility.git
 
 2. **Navigate to the Project Directory**: Move into the project directory.
 
    ```bash
-   cd <project_directory>
+   cd cordatus-flash-utility
 
 3. **Ensure Dependencies**: Make sure you have Python, Pandas and PySimpleGUI installed on your system. If not, you can install them using pip:
 
