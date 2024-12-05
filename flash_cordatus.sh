@@ -95,6 +95,8 @@ readonly ALL_6_0_DP=("https://developer.nvidia.com/downloads/embedded/l4t/r36_re
 readonly ALL_6_0=("https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v3.0/release/jetson_linux_r36.3.0_aarch64.tbz2" \
 "https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v3.0/release/tegra_linux_sample-root-filesystem_r36.3.0_aarch64.tbz2" \
 "http://download.comarge.com/omniwise/orin-nx/ONX101_6_0.zip")
+readonly ALL_6_1=("https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v4.0/release/Jetson_Linux_R36.4.0_aarch64.tbz2" \
+"https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v4.0/release/Tegra_Linux_Sample-Root-Filesystem_R36.4.0_aarch64.tbz2")
 readonly D131_6_0=("http://download.comarge.com/avermedia/orin-nano/D131_ORIN-R3.1.0.6.0.0.tar.gz")
 readonly D131_5_1_3=("http://download.comarge.com/avermedia/orin-nano/D131_ORIN-R2.4.1.5.1.3.tar.gz")
 readonly D131_5_1_2=("http://download.comarge.com/avermedia/orin-nano/D131ON-R2.1.0.5.1.2.tar.gz")
