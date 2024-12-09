@@ -97,7 +97,6 @@ readonly ALL_6_0=("https://developer.nvidia.com/downloads/embedded/l4t/r36_relea
 "http://download.comarge.com/omniwise/orin-nx/ONX101_6_0.zip")
 readonly ALL_6_1=("https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v4.0/release/Jetson_Linux_R36.4.0_aarch64.tbz2" \
 "https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v4.0/release/Tegra_Linux_Sample-Root-Filesystem_R36.4.0_aarch64.tbz2")
-readonly D131_6_0=("http://download.comarge.com/avermedia/orin-nano/D131_ORIN-R3.1.0.6.0.0.tar.gz")
 readonly D131_5_1_3=("http://download.comarge.com/avermedia/orin-nano/D131_ORIN-R2.4.1.5.1.3.tar.gz")
 readonly D131_5_1_2=("http://download.comarge.com/avermedia/orin-nano/D131ON-R2.1.0.5.1.2.tar.gz")
 readonly D131_5_1_1=("http://download.comarge.com/avermedia/orin-nano/D131ON-R2.0.3.5.1.1.tar.gz")
@@ -369,6 +368,15 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
     fi
     
     sudo tools/l4t_create_default_user.sh -u "nvidia" -p "nvidia" -a -n "tegra-ubuntu" --accept-license
+    # 5.1.3 için, diğerleri farklı
+    if [[ "${product}" == 'D131' ]]; then
+      if [[ "${jetpack_version}" == '5.1.3 - L4T 35.5.0' ]]; then
+        cam_selection="5"
+      else
+        cam_selection="8"
+      fi
+      sudo ./setup.sh "$cam_selection"
+    fi
     if ! sudo ./tools/kernel_flash/l4t_initrd_flash.sh --external-device nvme0n1p1 -c tools/kernel_flash/flash_l4t_external.xml \
     -p "-c bootloader/${cfg_folder_name}/cfg/flash_t234_qspi.xml" --showlogs --network usb0 "${device_name}" internal; then
       err "Unable to flash the device"
