@@ -105,6 +105,8 @@ readonly D315_5_1_1=("https://download.comarge.com/avermedia/agx-orin/D315AO-R2.
 readonly D315_5_1_2=("https://download.comarge.com/avermedia/agx-orin/D315AO-R2.4.1.5.1.2.tar.gz")
 readonly D315_5_1_3=("https://download.comarge.com/avermedia/agx-orin/D315AO-R2.5.2.5.1.3.tar.gz")
 readonly D315_6_0=("https://download.comarge.com/avermedia/agx-orin/D315AO-R3.1.0.6.0.0.tar.gz")
+readonly D315_6_1=("https://download.comarge.com/avermedia/agx-orin/D315AO-36.4.0.6.1.tar.gz")
+readonly D315_6_2=("https://download.comarge.com/avermedia/agx-orin/D315AO-36.4.3.6.2.tar.gz")
 
 # Function to display error messages
 function err() {
@@ -113,7 +115,9 @@ function err() {
 
 # Checking Host Computer Version Compatibility
 host_version=$(sudo -S cat /etc/os-release | grep 'VERSION_ID' | cut -d '"' -f 2)
-if [[ "${host_version}" == '20.04' || "${host_version}" == '18.04' ]]; then
+jetpack_initial="${jetpack_version:0:1}"
+
+if [[ "${host_version}" == '20.04' || "${host_version}" == '18.04' ]] || [[ "${host_version}" == '22.04' && "${jetpack_initial}" -ge 5 ]]; then
   echo "Ubuntu version is compatible, processing with flashing"
 else
   err "Your host computer Ubuntu version is ${host_version}, please use Ubuntu 20.04 or 18.04"
@@ -355,7 +359,7 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
 
     j_version=$(echo "$jetpack_version" | cut -d " " -f 1)
     
-    if [[ "${jetpack_version}" == '6.0 - L4T 36.3' ]]; then
+    if [[ "${jetpack_version}" == '6.0 - L4T 36.3' ]] || [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]] || [[ "${jetpack_version}" == '6.1 - L4T 36.4.0' ]]; then
       cfg_folder_name='generic'
     else
       cfg_folder_name='t186ref'
@@ -363,11 +367,14 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
     
     if [[ "${product}" == 'D315' ]] && [[ "${jetpack_version}" == '5.0.2 - L4T 35.1' ]] ; then
       cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_AGX_ORIN_TARGETS/Linux_for_Tegra || { err "Failed to change directory"; exit 1; }  
+    elif [[ "${product}" == 'D315' ]] && [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]] ; then
+      cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_desktop/Linux_for_Tegra || { err "Failed to change directory"; exit 1; }     
     else
       cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON/Linux_for_Tegra || { err "Failed to change directory"; exit 1; }      
     fi
     
     sudo tools/l4t_create_default_user.sh -u "nvidia" -p "nvidia" -a -n "tegra-ubuntu" --accept-license
+
     # 5.1.3 için, diğerleri farklı
     if [[ "${product}" == 'D131' ]]; then
       if [[ "${jetpack_version}" == '5.1.3 - L4T 35.5.0' ]]; then
@@ -375,8 +382,25 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
       else
         cam_selection="8"
       fi
-      sudo ./setup.sh "$cam_selection"
+    elif [[ "${product}" == 'D315' ]]; then
+      
+      if [[ "${jetpack_version}" == '6.1 - L4T 36.4.0' ]] || [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]]; then
+        cam_selection="0"
+      else
+        cam_selection="8"
+      fi
+
+      if [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]]; then
+        cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_desktop/Linux_for_Tegra/settings/D315 || { err "Failed to change directory"; exit 1; }
+        sudo rsync -a --exclude=".*" "./pinmux/" "../../../bootloader/"
+        sudo chmod +x ./addition_setup.sh
+        sudo ./addition_setup.sh "$cam_selection"
+        cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_desktop/Linux_for_Tegra || { err "Failed to change directory"; exit 1; }
+      else
+        sudo ./setup.sh "$cam_selection"
+      fi
     fi
+
     if ! sudo ./tools/kernel_flash/l4t_initrd_flash.sh --external-device nvme0n1p1 -c tools/kernel_flash/flash_l4t_external.xml \
     -p "-c bootloader/${cfg_folder_name}/cfg/flash_t234_qspi.xml" --showlogs --network usb0 "${device_name}" internal; then
       err "Unable to flash the device"
