@@ -108,9 +108,21 @@ readonly D315_6_0=("https://download.comarge.com/avermedia/agx-orin/D315AO-R3.1.
 readonly D315_6_1=("https://download.comarge.com/avermedia/agx-orin/D315AO-36.4.0.6.1.tar.gz")
 readonly D315_6_2=("https://download.comarge.com/avermedia/agx-orin/D315AO-36.4.3.6.2.tar.gz")
 
-# Function to display error messages
+# Functions
 function err() {
   echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $*" >&2
+}
+
+function d315_62(){
+    j_version=$(echo "$jetpack_version" | cut -d " " -f 1)
+    cfg_folder_name='generic'
+    cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_desktop/Linux_for_Tegra || { err "Failed to change directory"; exit 1; }
+    sudo tools/l4t_create_default_user.sh -u "nvidia" -p "nvidia" -a -n "tegra-ubuntu" --accept-license
+    cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_desktop/Linux_for_Tegra/settings/D315 || { err "Failed to change directory"; exit 1; }
+    sudo rsync -a --exclude=".*" "./pinmux/" "../../bootloader/"
+    sudo chmod +x ./addition_setup.sh
+    sudo ./addition_setup.sh 0
+    cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_desktop/Linux_for_Tegra || { err "Failed to change directory"; exit 1; }
 }
 
 # Checking Host Computer Version Compatibility
@@ -169,9 +181,8 @@ elif [[ "${product}" == 'D131' ]]; then
   fi
 
 elif [[ "${product}" == 'D315' ]]; then
-
-      device_flashed="D315"
-      device_name="jetson-agx-orin-d315ao"
+    device_flashed="D315"
+    device_name="jetson-agx-orin-d315ao"
 
 elif [[ "${product}" == 'Nano' ]]; then
   device_flashed="Nano"
@@ -247,7 +258,7 @@ fi
 
 echo "Downloading has been finished!"
 
-# Removing the old folder
+# # Removing the old folder
 if [[ -d ~/openzeka/Linux_for_Tegra ]]; then
   echo "Removing old files..."
   cd ~/openzeka/ || { err "Failed to change directory"; exit 1; }
@@ -256,10 +267,10 @@ fi
 
 # Extracting the downloaded files
 
-if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]]; then
-  command="xf"
-else
+if [[ "${device_flashed}" == "D131" ]] || [[ "${device_flashed}" == "D315" ]]; then
   command="zxf"
+else
+  command="xf"
 fi
 
 echo "Extracting ${filename_1}, this may take a while..."
@@ -322,7 +333,11 @@ fi
 
 if [[ "${storage_device}" == 'Micro SD' ]]; then
   
-  if [[ "${device_module}" == 'AGX Orin' ]] && [[ "${jetpack_version}" == '6.0.DP - L4T 36.2' ]]; then
+  if [[ "${product}" == 'D315' ]]; then
+    d315_62
+  fi
+
+  if [[ "${device_module}" == 'AGX Orin' && "${jetpack_version}" == '6.0.DP - L4T 36.2' ]] || [[ "${product}" == 'D315' ]]; then
     boot_dev='internal'
   else
     boot_dev='mmcblk0p1'
@@ -359,7 +374,7 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
 
     j_version=$(echo "$jetpack_version" | cut -d " " -f 1)
     
-    if [[ "${jetpack_version}" == '6.0 - L4T 36.3' ]] || [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]] || [[ "${jetpack_version}" == '6.1 - L4T 36.4.0' ]]; then
+    if [[ "${jetpack_version}" == '6.0 - L4T 36.3' ]] || [[ "${jetpack_version}" == '6.1 - L4T 36.4.0' ]] || [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]]; then
       cfg_folder_name='generic'
     else
       cfg_folder_name='t186ref'
@@ -375,7 +390,6 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
     
     sudo tools/l4t_create_default_user.sh -u "nvidia" -p "nvidia" -a -n "tegra-ubuntu" --accept-license
 
-    # 5.1.3 için, diğerleri farklı
     if [[ "${product}" == 'D131' ]]; then
       if [[ "${jetpack_version}" == '5.1.3 - L4T 35.5.0' ]]; then
         cam_selection="5"
@@ -392,7 +406,7 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
 
       if [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]]; then
         cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_desktop/Linux_for_Tegra/settings/D315 || { err "Failed to change directory"; exit 1; }
-        sudo rsync -a --exclude=".*" "./pinmux/" "../../../bootloader/"
+        sudo rsync -a --exclude=".*" "./pinmux/" "../../bootloader/"
         sudo chmod +x ./addition_setup.sh
         sudo ./addition_setup.sh "$cam_selection"
         cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_desktop/Linux_for_Tegra || { err "Failed to change directory"; exit 1; }
@@ -418,14 +432,14 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
 fi
 
 # Removing installation files if requested
-if [[ "${keep_files}" == 'False' ]]; then
-echo "Deleting installation files"
-  if ! sudo rm -r ~/openzeka; then
-    err "Unable to delete installation files"
-    exit 1
-  fi
-fi
+# if [[ "${keep_files}" == 'False' ]]; then
+# echo "Deleting installation files"
+#   if ! sudo rm -r ~/openzeka; then
+#     err "Unable to delete installation files"
+#     exit 1
+#   fi
+# fi
 
 echo "Your device has been flashed successfully..."
 
-exit 0
+# exit 0
