@@ -107,6 +107,7 @@ readonly D315_5_1_3=("https://download.comarge.com/avermedia/agx-orin/D315AO-R2.
 readonly D315_6_0=("https://download.comarge.com/avermedia/agx-orin/D315AO-R3.1.0.6.0.0.tar.gz")
 readonly D315_6_1=("https://download.comarge.com/avermedia/agx-orin/D315AO-36.4.0.6.1.tar.gz")
 readonly D315_6_2=("https://download.comarge.com/avermedia/agx-orin/D315AO-36.4.3.6.2.tar.gz")
+readonly J401_6_1=("https://download.comarge.com/seeed/orin-nx-16/J401ONX16-6.1.tar.gz")
 
 # Functions
 function err() {
@@ -184,6 +185,9 @@ elif [[ "${product}" == 'D315' ]]; then
     device_flashed="D315"
     device_name="jetson-agx-orin-d315ao"
 
+elif [[ "${product}" == 'J401' ]]; then
+    device_flashed="J401"
+
 elif [[ "${product}" == 'Nano' ]]; then
   device_flashed="Nano"
   device_name="jetson-nano-devkit"
@@ -207,7 +211,7 @@ fi
 jetpack_code=$(echo "${jetpack_version//\./_}" | cut -d " " -f 1)
 
 
-if (( "${jetpack_code:0:1}" != 4 )) && [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]]; then
+if (( "${jetpack_code:0:1}" != 4 )) && [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]]; then
   device_flashed='ALL'
 fi
 
@@ -234,7 +238,7 @@ echo "downloading file ${filename_1}"
   fi
 fi
 
-if [[ ! -e ~/openzeka/"${filename_2}" ]] && [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]]; then
+if [[ ! -e ~/openzeka/"${filename_2}" ]] && [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]]; then
 echo "downloading file ${filename_2}"
   if ! sudo -u "${user_name}" wget -O ~/openzeka/"${filename_2}" "${!download_link_2}"; then
     err "Unable to download Sample Root Filesystem"
@@ -269,6 +273,8 @@ fi
 
 if [[ "${device_flashed}" == "D131" ]] || [[ "${device_flashed}" == "D315" ]]; then
   command="zxf"
+elif [[ "${device_flashed}" == "J401" ]]; then
+  command="xpf"
 else
   command="xf"
 fi
@@ -279,7 +285,7 @@ if ! sudo tar ${command} ~/openzeka/"${filename_1}" -C ~/openzeka/; then
   exit 1
 fi
 
-if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]]; then
+if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]]; then
 
   echo "Extracting ${filename_2}, this may take a while..."
   if ! sudo tar xpf ~/openzeka/"${filename_2}" -C ~/openzeka/Linux_for_Tegra/rootfs/; then
@@ -301,7 +307,7 @@ fi
 
 # Applying binaries, preparing the additional files and flashing the device based on storage device type
 
-if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]]; then
+if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]]; then
 
   echo "Applying binaries ..."
   cd ~/openzeka/Linux_for_Tegra/ || { err "Failed to change directory"; exit 1; }
@@ -420,6 +426,13 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
       err "Unable to flash the device"
       exit 1
     fi
+  elif [[ "${product}" == 'J401' ]]; then
+
+    cd ~/openzeka/mfi_recomputer-orin-j401 || { err "Failed to change directory"; exit 1; }
+    if ! sudo ./tools/kernel_flash/l4t_initrd_flash.sh --flash-only --massflash 1 --network usb0  --showlogs; then
+      err "Unable to flash the device"
+      exit 1
+    fi
 
   else
     echo "./nvsdkmanager_flash.sh --storage nvme0n1p1"
@@ -431,14 +444,14 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
 
 fi
 
-# Removing installation files if requested
-# if [[ "${keep_files}" == 'False' ]]; then
-# echo "Deleting installation files"
-#   if ! sudo rm -r ~/openzeka; then
-#     err "Unable to delete installation files"
-#     exit 1
-#   fi
-# fi
+Removing installation files if requested
+if [[ "${keep_files}" == 'False' ]]; then
+echo "Deleting installation files"
+  if ! sudo rm -r ~/openzeka; then
+    err "Unable to delete installation files"
+    exit 1
+  fi
+fi
 
 echo "Your device has been flashed successfully..."
 
