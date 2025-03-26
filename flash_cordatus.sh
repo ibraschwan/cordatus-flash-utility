@@ -97,6 +97,7 @@ readonly ALL_6_0=("https://developer.nvidia.com/downloads/embedded/l4t/r36_relea
 "http://download.comarge.com/omniwise/orin-nx/ONX101_6_0.zip")
 readonly ALL_6_1=("https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v4.0/release/Jetson_Linux_R36.4.0_aarch64.tbz2" \
 "https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v4.0/release/Tegra_Linux_Sample-Root-Filesystem_R36.4.0_aarch64.tbz2")
+readonly D131_6_2=("http://download.comarge.com/avermedia/orin-nano/AVERMEDIA_JETPACK-R1.1.0.6.2.0_desktop.tar.gz")
 readonly D131_5_1_3=("http://download.comarge.com/avermedia/orin-nano/D131_ORIN-R2.4.1.5.1.3.tar.gz")
 readonly D131_5_1_2=("http://download.comarge.com/avermedia/orin-nano/D131ON-R2.1.0.5.1.2.tar.gz")
 readonly D131_5_1_1=("http://download.comarge.com/avermedia/orin-nano/D131ON-R2.0.3.5.1.1.tar.gz")
@@ -177,7 +178,10 @@ elif [[ "${product}" == 'D131' ]]; then
       device_name="jetson-orin-nano-d131on"
     elif [[ "${jetpack_version}" == '6.0 - L4T 36.3' ]]; then
       device_flashed="D131"
-      device_name="jetson-orin-d131"   
+      device_name="jetson-orin-d131"
+    elif [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]]; then
+      device_flashed="D131"
+      device_name="jetson-orin-d131-super"
     fi
   fi
 
@@ -195,7 +199,7 @@ elif [[ "${product}" == 'Nano' ]]; then
 fi
 
 # Checking whether a force recovery device is connected to the host
-if [[ ${host_version} == '20.04' ]]; then
+if [[ ${host_version} == '20.04'  || ${host_version} == '22.04' ]]; then
   recovery_status=$(lsusb | grep 'NVIDIA Corp.' | cut -d " " -f 7)
 elif [[ ${host_version} == '18.04' ]]; then
   recovery_status=$(lsusb | grep 'NVidia Corp.' | cut -d " " -f 7)
@@ -293,7 +297,7 @@ if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] &&
     exit 1
   fi
 
-  if [[ "${jetpack_code}" == '4_6_3' || "${jetpack_code}" == '4_6_4' || "${jetpack_code}" == '4_6_5'  ]]; then
+  if [[ "${jetpack_code}" == '4_6_3' || "${jetpack_code}" == '4_6_4' || "${jetpack_code}" == '4_6_5'  ||  "${product}" == "ONX-101" ]]; then
     if [[  "${product}" == 'Xavier' ]]; then
       echo "Extracting ${filename_3} ..."
       if ! sudo tar xvjf ~/openzeka/"${filename_3}" -C ~/openzeka/; then
@@ -388,7 +392,7 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
     
     if [[ "${product}" == 'D315' ]] && [[ "${jetpack_version}" == '5.0.2 - L4T 35.1' ]] ; then
       cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_AGX_ORIN_TARGETS/Linux_for_Tegra || { err "Failed to change directory"; exit 1; }  
-    elif [[ "${product}" == 'D315' ]] && [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]] ; then
+    elif [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]] ; then
       cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_desktop/Linux_for_Tegra || { err "Failed to change directory"; exit 1; }     
     else
       cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON/Linux_for_Tegra || { err "Failed to change directory"; exit 1; }      
@@ -397,11 +401,20 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
     sudo tools/l4t_create_default_user.sh -u "nvidia" -p "nvidia" -a -n "tegra-ubuntu" --accept-license
 
     if [[ "${product}" == 'D131' ]]; then
+    
       if [[ "${jetpack_version}" == '5.1.3 - L4T 35.5.0' ]]; then
-        cam_selection="5"
+        sudo ./setup.sh 5
+      elif [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]]; then
+        sudo echo -e "CARRIER_BOARD_NAME=D131\nMODE_TYPE=" > "./rootfs/etc/avt_carrier_board.conf"
+        cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_desktop/Linux_for_Tegra/settings/D131 || { err "Failed to change directory"; exit 1; }
+        sudo rsync -a --exclude=".*" "./pinmux/" "../../bootloader/"
+        sudo chmod +x ./addition_setup.sh
+        sudo ./addition_setup.sh 1 4
+        cd ~/openzeka/JetPack_"${j_version}"_Linux_JETSON_desktop/Linux_for_Tegra || { err "Failed to change directory"; exit 1; }
       else
-        cam_selection="8"
+        sudo ./setup.sh 8
       fi
+
     elif [[ "${product}" == 'D315' ]]; then
       
       if [[ "${jetpack_version}" == '6.1 - L4T 36.4.0' ]] || [[ "${jetpack_version}" == '6.2 - L4T 36.4.3' ]]; then
