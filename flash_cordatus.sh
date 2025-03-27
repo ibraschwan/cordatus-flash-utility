@@ -297,7 +297,7 @@ if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] &&
     exit 1
   fi
 
-  if [[ "${jetpack_code}" == '4_6_3' || "${jetpack_code}" == '4_6_4' || "${jetpack_code}" == '4_6_5'  ||  "${product}" == "ONX-101" ]]; then
+  if [[ "${jetpack_code}" == '4_6_3' || "${jetpack_code}" == '4_6_4' || "${jetpack_code}" == '4_6_5' ]]; then
     if [[  "${product}" == 'Xavier' ]]; then
       echo "Extracting ${filename_3} ..."
       if ! sudo tar xvjf ~/openzeka/"${filename_3}" -C ~/openzeka/; then
