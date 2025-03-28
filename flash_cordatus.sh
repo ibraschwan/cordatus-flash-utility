@@ -98,6 +98,7 @@ readonly ALL_6_0=("https://developer.nvidia.com/downloads/embedded/l4t/r36_relea
 readonly ALL_6_1=("https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v4.0/release/Jetson_Linux_R36.4.0_aarch64.tbz2" \
 "https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v4.0/release/Tegra_Linux_Sample-Root-Filesystem_R36.4.0_aarch64.tbz2")
 readonly D131_6_2=("http://download.comarge.com/avermedia/orin-nano/AVERMEDIA_JETPACK-R1.1.0.6.2.0_desktop.tar.gz")
+readonly D131L_6_1=("http://download.comarge.com/avermedia/orin-nano/D131_ORIN-R3.2.0.6.1.0.tar.gz")
 readonly D131_5_1_3=("http://download.comarge.com/avermedia/orin-nano/D131_ORIN-R2.4.1.5.1.3.tar.gz")
 readonly D131_5_1_2=("http://download.comarge.com/avermedia/orin-nano/D131ON-R2.1.0.5.1.2.tar.gz")
 readonly D131_5_1_1=("http://download.comarge.com/avermedia/orin-nano/D131ON-R2.0.3.5.1.1.tar.gz")
@@ -160,7 +161,7 @@ elif [[ "${product}" == 'D131L' ]]; then
 
   if [[ "${device_module}" == 'Orin NX' ]]; then
     device_flashed="D131L"
-    device_name="jetson-orin-nano-devkit"
+    device_name="jetson-orin-d131"
   elif [[ "${device_module}" == 'Orin Nano - 4GB' ]]; then
     device_flashed="D131L"
     device_name="jetson-orin-nano-devkit"
@@ -215,7 +216,7 @@ fi
 jetpack_code=$(echo "${jetpack_version//\./_}" | cut -d " " -f 1)
 
 
-if (( "${jetpack_code:0:1}" != 4 )) && [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]]; then
+if (( "${jetpack_code:0:1}" != 4 )) && [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]] && [[ ! ("${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1') ]]; then
   device_flashed='ALL'
 fi
 
@@ -242,7 +243,7 @@ echo "downloading file ${filename_1}"
   fi
 fi
 
-if [[ ! -e ~/openzeka/"${filename_2}" ]] && [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]]; then
+if [[ ! -e ~/openzeka/"${filename_2}" ]] && [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]] && [[ ! ("${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1') ]]; then
 echo "downloading file ${filename_2}"
   if ! sudo -u "${user_name}" wget -O ~/openzeka/"${filename_2}" "${!download_link_2}"; then
     err "Unable to download Sample Root Filesystem"
@@ -275,7 +276,7 @@ fi
 
 # Extracting the downloaded files
 
-if [[ "${device_flashed}" == "D131" ]] || [[ "${device_flashed}" == "D315" ]]; then
+if [[ "${device_flashed}" == "D131" ]] || [[ "${device_flashed}" == "D315" ]] || [[ "${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1' ]]; then
   command="zxf"
 elif [[ "${device_flashed}" == "J401" ]]; then
   command="xpf"
@@ -289,7 +290,7 @@ if ! sudo tar ${command} ~/openzeka/"${filename_1}" -C ~/openzeka/; then
   exit 1
 fi
 
-if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]]; then
+if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]] && [[ ! ("${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1') ]]; then
 
   echo "Extracting ${filename_2}, this may take a while..."
   if ! sudo tar xpf ~/openzeka/"${filename_2}" -C ~/openzeka/Linux_for_Tegra/rootfs/; then
@@ -311,7 +312,7 @@ fi
 
 # Applying binaries, preparing the additional files and flashing the device based on storage device type
 
-if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]]; then
+if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]] && [[ ! ("${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1') ]]; then
 
   echo "Applying binaries ..."
   cd ~/openzeka/Linux_for_Tegra/ || { err "Failed to change directory"; exit 1; }
@@ -380,7 +381,7 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
       exit 1
     fi
 
-  elif [[ "${product}" == 'D131' ]] || [[ "${product}" == 'D315' ]]; then
+  elif [[ "${product}" == 'D131' ]] || [[ "${product}" == 'D315' ]] || [[ ("${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1') ]]; then
 
     j_version=$(echo "$jetpack_version" | cut -d " " -f 1)
     
@@ -414,6 +415,9 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
       else
         sudo ./setup.sh 8
       fi
+    elif [[ "${product}" == 'D131L' ]]; then
+    
+        sudo ./setup.sh 7
 
     elif [[ "${product}" == 'D315' ]]; then
       
