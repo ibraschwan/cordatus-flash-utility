@@ -461,7 +461,7 @@ elif [[ "${storage_device}" == 'NVMe SSD' ]]; then
 
 fi
 
-Removing installation files if requested
+# Removing installation files if requested
 if [[ "${keep_files}" == 'False' ]]; then
 echo "Deleting installation files"
   if ! sudo rm -r ~/openzeka; then
