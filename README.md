@@ -77,3 +77,4 @@ sudo apt install nvidia-jetpack ```
 - The script may prompt for password when accessing system resources.
 - Adjust the URLs and version numbers in the flashing script based on the latest available releases.
 - For D131 devices, the installation is done automatically and does not prompt for a username or password. The default username and password are "nvidia".
+- If Super Mode is supported, the utility uses it to flash the device.

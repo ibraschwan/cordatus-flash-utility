@@ -49,67 +49,8 @@ device_flashed=""
 device_name=""
 host_version=""
 
-# URLs for different Jetson versions
-# Each array contains the URLs for BSP files and sample root filesystem
-# The version numbers and URLs might need to be updated accordingly
-readonly NANO_4_6_1=("https://developer.nvidia.com/embedded/l4t/r32_release_v7.1/t210/jetson-210_linux_r32.7.1_aarch64.tbz2" \
-"https://developer.nvidia.com/embedded/l4t/r32_release_v7.1/t210/tegra_linux_sample-root-filesystem_r32.7.1_aarch64.tbz2")
-readonly NANO_4_6_2=("https://developer.nvidia.com/embedded/l4t/r32_release_v7.2/t210/jetson-210_linux_r32.7.2_aarch64.tbz2" \
-"https://developer.nvidia.com/embedded/l4t/r32_release_v7.2/t210/tegra_linux_sample-root-filesystem_r32.7.2_aarch64.tbz2")
-readonly NANO_4_6_3=("https://developer.nvidia.com/downloads/remetpack-463r32releasev73t210jetson-210linur3273aarch64tbz2" \
-"https://developer.nvidia.com/downloads/remeleasev73t210tegralinusample-root-filesystemr3273aarch64tbz2")
-readonly NANO_4_6_4=("https://developer.nvidia.com/downloads/embedded/l4t/r32_release_v7.4/t210/jetson-210_linux_r32.7.4_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r32_release_v7.4/t210/tegra_linux_sample-root-filesystem_r32.7.4_aarch64.tbz2")
-readonly NANO_4_6_5=("https://developer.nvidia.com/downloads/embedded/l4t/r32_release_v7.5/t210/jetson-210_linux_r32.7.5_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r32_release_v7.5/t210/tegra_linux_sample-root-filesystem_r32.7.5_aarch64.tbz2")
-readonly AGX_XAVIER_XAVIER_NX_4_6_1=("https://developer.nvidia.com/embedded/l4t/r32_release_v7.1/t186/jetson_linux_r32.7.1_aarch64.tbz2" \
-"https://developer.nvidia.com/embedded/l4t/r32_release_v7.1/t186/tegra_linux_sample-root-filesystem_r32.7.1_aarch64.tbz2")
-readonly AGX_XAVIER_XAVIER_NX_4_6_2=("https://developer.nvidia.com/embedded/l4t/r32_release_v7.2/t186/jetson_linux_r32.7.2_aarch64.tbz2" \
-"https://developer.nvidia.com/embedded/l4t/r32_release_v7.2/t186/tegra_linux_sample-root-filesystem_r32.7.2_aarch64.tbz2")
-readonly AGX_XAVIER_XAVIER_NX_4_6_3=("https://developer.nvidia.com/downloads/remksjetpack-463r32releasev73t186jetsonlinur3273aarch64tbz2" \
-"https://developer.nvidia.com/downloads/remeleasev73t186tegralinusample-root-filesystemr3273aarch64tbz2" \
-"https://developer.nvidia.com/downloads/remsdksjetpack-463r32releasev73t186securebootr3273aarch64tbz2")
-readonly AGX_XAVIER_XAVIER_NX_4_6_4=("https://developer.nvidia.com/downloads/embedded/l4t/r32_release_v7.4/t186/jetson_linux_r32.7.4_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r32_release_v7.4/t186/tegra_linux_sample-root-filesystem_r32.7.4_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r32_release_v7.4/t186/secureboot_r32.7.4_aarch64.tbz2")
-readonly AGX_XAVIER_XAVIER_NX_4_6_5=("https://developer.nvidia.com/downloads/embedded/l4t/r32_release_v7.5/t186/jetson_linux_r32.7.5_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r32_release_v7.5/t186/tegra_linux_sample-root-filesystem_r32.7.5_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r32_release_v7.5/t186/secureboot_r32.7.5_aarch64.tbz2")
-readonly ALL_5_0_2=("https://developer.nvidia.com/embedded/l4t/r35_release_v1.0/release/jetson_linux_r35.1.0_aarch64.tbz2" \
-"https://developer.nvidia.com/embedded/l4t/r35_release_v1.0/release/tegra_linux_sample-root-filesystem_r35.1.0_aarch64.tbz2")
-readonly ALL_5_1=("https://developer.nvidia.com/downloads/jetson-linux-r3521-aarch64tbz2" \
-"https://developer.nvidia.com/downloads/linux-sample-root-filesystem-r3521aarch64tbz2")
-readonly ALL_5_1_1=("https://developer.nvidia.com/downloads/embedded/l4t/r35_release_v3.1/release/jetson_linux_r35.3.1_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r35_release_v3.1/release/tegra_linux_sample-root-filesystem_r35.3.1_aarch64.tbz2" 
-"http://download.comarge.com/omniwise/orin-nx/ONX101_5_1_1.zip")
-readonly ALL_5_1_2=("https://developer.nvidia.com/downloads/embedded/l4t/r35_release_v4.1/release/jetson_linux_r35.4.1_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r35_release_v4.1/release/tegra_linux_sample-root-filesystem_r35.4.1_aarch64.tbz2" \
-"http://download.comarge.com/omniwise/orin-nx/ONX101_5_1_2.zip")
-readonly ALL_5_1_3=("https://developer.nvidia.com/downloads/embedded/l4t/r35_release_v5.0/release/jetson_linux_r35.5.0_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r35_release_v5.0/release/tegra_linux_sample-root-filesystem_r35.5.0_aarch64.tbz2" \
-"http://download.comarge.com/omniwise/orin-nx/ONX101_5_1_3.zip")
-readonly ALL_5_1_4=("https://developer.nvidia.com/downloads/embedded/l4t/r35_release_v6.0/release/jetson_linux_r35.6.0_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r35_release_v6.0/release/tegra_linux_sample-root-filesystem_r35.6.0_aarch64.tbz2")
-readonly ALL_6_0_DP=("https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v2.0/release/jetson_linux_r36.2.0_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v2.0/release/tegra_linux_sample-root-filesystem_r36.2.0_aarch64.tbz2")
-readonly ALL_6_0=("https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v3.0/release/jetson_linux_r36.3.0_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v3.0/release/tegra_linux_sample-root-filesystem_r36.3.0_aarch64.tbz2" \
-"http://download.comarge.com/omniwise/orin-nx/ONX101_6_0.zip")
-readonly ALL_6_1=("https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v4.0/release/Jetson_Linux_R36.4.0_aarch64.tbz2" \
-"https://developer.nvidia.com/downloads/embedded/l4t/r36_release_v4.0/release/Tegra_Linux_Sample-Root-Filesystem_R36.4.0_aarch64.tbz2")
-readonly D131_6_2=("http://download.comarge.com/avermedia/orin-nano/AVERMEDIA_JETPACK-R1.1.0.6.2.0_desktop.tar.gz")
-readonly D131L_6_1=("http://download.comarge.com/avermedia/orin-nano/D131_ORIN-R3.2.0.6.1.0.tar.gz")
-readonly D131_5_1_3=("http://download.comarge.com/avermedia/orin-nano/D131_ORIN-R2.4.1.5.1.3.tar.gz")
-readonly D131_5_1_2=("http://download.comarge.com/avermedia/orin-nano/D131ON-R2.1.0.5.1.2.tar.gz")
-readonly D131_5_1_1=("http://download.comarge.com/avermedia/orin-nano/D131ON-R2.0.3.5.1.1.tar.gz")
-readonly D315_5_0_2=("https://download.comarge.com/avermedia/agx-orin/D315AO-R2.1.8.5.0.2.tar.gz")
-readonly D315_5_1_1=("https://download.comarge.com/avermedia/agx-orin/D315AO-R2.3.1.5.1.1.tar.gz")
-readonly D315_5_1_2=("https://download.comarge.com/avermedia/agx-orin/D315AO-R2.4.1.5.1.2.tar.gz")
-readonly D315_5_1_3=("https://download.comarge.com/avermedia/agx-orin/D315AO-R2.5.2.5.1.3.tar.gz")
-readonly D315_6_0=("https://download.comarge.com/avermedia/agx-orin/D315AO-R3.1.0.6.0.0.tar.gz")
-readonly D315_6_1=("https://download.comarge.com/avermedia/agx-orin/D315AO-36.4.0.6.1.tar.gz")
-readonly D315_6_2=("https://download.comarge.com/avermedia/agx-orin/D315AO-36.4.3.6.2.tar.gz")
-readonly J401_6_1=("https://download.comarge.com/seeed/orin-nx-16/J401ONX16-6.1.tar.gz")
+# Source files
+source ./data/urls.sh
 
 # Functions
 function err() {
@@ -157,8 +98,8 @@ elif [[ "${product}" == 'Xavier' ]]; then
     device_name="jetson-xavier-nx-devkit"
   fi
 
-elif [[ "${product}" == 'D131L' ]]; then
-
+elif [[ "${product}" == 'D131L' ||  "${product}" == 'Blanet' ]]; then
+  product="D131L"
   if [[ "${device_module}" == 'Orin NX' ]]; then
     device_flashed="D131L"
     device_name="jetson-orin-d131"
@@ -186,12 +127,17 @@ elif [[ "${product}" == 'D131' ]]; then
     fi
   fi
 
+elif [[ "${product}" == 'Pulsar' ]]; then
+    product="D315"
+    device_flashed="D315"
+    device_name="jetson-agx-orin-d315ao"
+
 elif [[ "${product}" == 'D315' ]]; then
     device_flashed="D315"
     device_name="jetson-agx-orin-d315ao"
 
 elif [[ "${product}" == 'J401' ]]; then
-    device_flashed="J401"
+    device_flashed="J401"df
 
 elif [[ "${product}" == 'Nano' ]]; then
   device_flashed="Nano"
@@ -216,8 +162,14 @@ fi
 jetpack_code=$(echo "${jetpack_version//\./_}" | cut -d " " -f 1)
 
 
-if (( "${jetpack_code:0:1}" != 4 )) && [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]] && [[ ! ("${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1') ]]; then
+if (( "${jetpack_code:0:1}" != 4 )) && \
+   [[ "${device_flashed}" != "D131" ]] && \
+   [[ "${device_flashed}" != "D315" ]] && \
+   [[ "${device_flashed}" != "J401" ]] && \
+   [[ ! ("${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1') ]]; then
+
   device_flashed='ALL'
+
 fi
 
 download_link_1="${device_flashed^^}_${jetpack_code}[0]"
@@ -243,12 +195,18 @@ echo "downloading file ${filename_1}"
   fi
 fi
 
-if [[ ! -e ~/openzeka/"${filename_2}" ]] && [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]] && [[ ! ("${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1') ]]; then
-echo "downloading file ${filename_2}"
-  if ! sudo -u "${user_name}" wget -O ~/openzeka/"${filename_2}" "${!download_link_2}"; then
-    err "Unable to download Sample Root Filesystem"
-    exit 1
-  fi
+if [[ ! -e ~/openzeka/"${filename_2}" ]] && \
+   [[ "${device_flashed}" != "D131" ]] && \
+   [[ "${device_flashed}" != "D315" ]] && \
+   [[ "${device_flashed}" != "J401" ]] && \
+   [[ ! ("${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1') ]]; then
+
+     echo "downloading file ${filename_2}"
+     if ! sudo -u "${user_name}" wget -O ~/openzeka/"${filename_2}" "${!download_link_2}"; then
+       err "Unable to download Sample Root Filesystem"
+       exit 1
+     fi
+
 fi
 
 
@@ -290,23 +248,27 @@ if ! sudo tar ${command} ~/openzeka/"${filename_1}" -C ~/openzeka/; then
   exit 1
 fi
 
-if [[ "${device_flashed}" != "D131" ]] && [[ "${device_flashed}" != "D315" ]] && [[ "${device_flashed}" != "J401" ]] && [[ ! ("${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1') ]]; then
+if [[ "${device_flashed}" != "D131" ]] && \
+   [[ "${device_flashed}" != "D315" ]] && \
+   [[ "${device_flashed}" != "J401" ]] && \
+   [[ ! ("${device_flashed}" == "D131L" && "${jetpack_code}" == '6_1') ]]; then
 
-  echo "Extracting ${filename_2}, this may take a while..."
-  if ! sudo tar xpf ~/openzeka/"${filename_2}" -C ~/openzeka/Linux_for_Tegra/rootfs/; then
-    err "Unable to extract Sample Root Filesystem"
-    exit 1
-  fi
+     echo "Extracting ${filename_2}, this may take a while..."
+     if ! sudo tar xpf ~/openzeka/"${filename_2}" -C ~/openzeka/Linux_for_Tegra/rootfs/; then
+       err "Unable to extract Sample Root Filesystem"
+       exit 1
+     fi
 
-  if [[ "${jetpack_code}" == '4_6_3' || "${jetpack_code}" == '4_6_4' || "${jetpack_code}" == '4_6_5' ]]; then
-    if [[  "${product}" == 'Xavier' ]]; then
-      echo "Extracting ${filename_3} ..."
-      if ! sudo tar xvjf ~/openzeka/"${filename_3}" -C ~/openzeka/; then
-        err "Unable to extract Secure Boot Files"
-        exit 1
-      fi
-    fi
-  fi
+     if [[ "${jetpack_code}" == '4_6_3' || "${jetpack_code}" == '4_6_4' || "${jetpack_code}" == '4_6_5' ]]; then
+       if [[  "${product}" == 'Xavier' ]]; then
+         echo "Extracting ${filename_3} ..."
+         if ! sudo tar xvjf ~/openzeka/"${filename_3}" -C ~/openzeka/; then
+           err "Unable to extract Secure Boot Files"
+           exit 1
+         fi
+       fi
+       df 
+     fi
 
 fi
 
@@ -348,7 +310,7 @@ if [[ "${storage_device}" == 'Micro SD' ]]; then
     d315_62
   fi
 
-  if [[ "${device_module}" == 'AGX Orin' && "${jetpack_version}" == '6.0.DP - L4T 36.2' ]] || [[ "${product}" == 'D315' ]]; then
+  if [[ "${device_module}" == 'AGX Orin' && "${jetpack_version}" == '6.0.DP - L4T 36.2' ]] || [[ "${device_module}" == 'AGX Orin' && "${jetpack_version}" == '6.2 - L4T 36.4.3' ]] || [[ "${product}" == 'D315' ]]; then
     boot_dev='internal'
   else
     boot_dev='mmcblk0p1'
@@ -472,4 +434,4 @@ fi
 
 echo "Your device has been flashed successfully..."
 
-# exit 0
+exit 0

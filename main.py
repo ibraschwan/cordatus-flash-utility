@@ -79,6 +79,7 @@ def disable(window):
     window['ComboStorage'].update(disabled=True)
     window['KeepFiles'].update(disabled=True)
     window['SudoPass'].update(disabled=True)
+    window['Run'].update(disabled=True)
 
 def enable(window):
     """Function enabling inuputs after flashing."""
@@ -89,6 +90,7 @@ def enable(window):
     window['ComboStorage'].update(disabled=False)
     window['KeepFiles'].update(disabled=False)
     window['SudoPass'].update(disabled=False)
+    window['Run'].update(disabled=False)
 
 def update_text_element(window, values):
     """Function displaying outputs during flashing."""
@@ -227,15 +229,16 @@ settings_layout = [
                         size=csize,auto_size_text=False,  pad= padding_value, font= font,\
                               background_color = DARK_GRAY_BACKGROUND,\
                                 button_background_color = GRAY_TITLE_COLOR) ],
-          [sg.Text('Sudo', size=(7, None),  font=font, pad= padding_value,\
-                    text_color= TEXT_COLOR), sg.Text(":",font= font, pad= padding_value_ext,\
+          [sg.Column([[sg.Text('Sudo', size=(7, None),  font=font, pad= ((20,20),(0,0)),\
+                    text_color= TEXT_COLOR)],[sg.Text('(Host Machine)', size=(12, None),  font=("Arial", 9), pad= ((20,20),(0,0)),\
+                    text_color= TEXT_COLOR)]],pad= ((0,0),(0,0))), sg.Text(":",font= font, pad= padding_value_ext,\
                       text_color= TEXT_COLOR), sg.InputText(key='SudoPass', password_char='*',\
                         size=(31, 1), pad= padding_value, font=font,\
                           background_color = DARK_GRAY_BACKGROUND)],
-          [sg.Button('', image_filename=TOGGLE_BTN_OFF, key='KeepFiles', pad= padding_value,\
+          [sg.Button('', image_filename=TOGGLE_BTN_OFF, key='KeepFiles', pad= ((20,20),(10,10)),\
                       button_color=(sg.theme_background_color(), sg.theme_background_color()),\
                         border_width=0, metadata= False), sg.Text('Keep Files After Installation!',\
-                          text_color= GRAY_TITLE_COLOR, font=font, pad= ((0,20),(0,10)))]]
+                          text_color= GRAY_TITLE_COLOR, font=font, pad= ((0,20),(10,10)))]]
 
 layout = [
           [sg.Column(custom_titlebar_layout, expand_x=True, pad=(0, 0),\
