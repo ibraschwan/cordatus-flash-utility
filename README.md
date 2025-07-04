@@ -62,11 +62,18 @@ Follow these steps to flash your Jetson device:
 8. **Follow On-Screen Instructions**: Follow the progress displayed in the GUI. Ensure that the flashing process completes successfully.
 
 9. **Disconnect Device**: After flashing is complete, safely disconnect your Jetson device from your host computer.
+    
+11. **Complete Installation**: This application only installs Linux for Tegra (L4T). After the flashing process is complete, log in to your Jetson device and run the following commands to complete the NVIDIA JetPack installation:
+
+```bash
+sudo apt update
+sudo apt install nvidia-jetpack
+
 
 ## Notes
 - Make sure to run the Python GUI script with appropriate permissions (e.g., using `sudo`).
 - Stop the `udisks2` service before flashing if it interferes with the process.
-- Ensure that the flashing script is executed on a system with Ubuntu 20.04 or 18.04.
+- Ensure that the flashing script is executed on a system with Ubuntu 22.04, 20.04 or 18.04.
 - The script may prompt for password when accessing system resources.
 - Adjust the URLs and version numbers in the flashing script based on the latest available releases.
 - For D131 devices, the installation is done automatically and does not prompt for a username or password. The default username and password are "nvidia".
