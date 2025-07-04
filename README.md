@@ -67,7 +67,8 @@ Follow these steps to flash your Jetson device:
 
 ```bash
 sudo apt update
-sudo apt install nvidia-jetpack ```
+sudo apt install nvidia-jetpack
+```
 
 
 ## Notes
