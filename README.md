@@ -10,7 +10,7 @@ The configuration file is stored under the folder `data` along with some image f
 
 ### Prerequisites
 
-- Ubuntu 20.04 or 18.04
+- Ubuntu 22.04, 20.04 or 18.04
 - Python 3.6 or higher (Installation codes are provided in the usage section)
 - Pandas (Installation codes are provided in the usage section)
 - tkinter (Installation codes are provided in the usage section)
