@@ -1,4 +1,57 @@
-# Cordatus Flashing Utility
+# JetsonFlash Pro - Ultimate Jetson Flashing Tool
+
+A premium, modern desktop application for flashing NVIDIA Jetson devices with an elegant glassmorphic UI and professional-grade features.
+
+## 🚀 Features
+
+- **Premium UI**: Glassmorphic design with NVIDIA green accents and smooth animations
+- **Device Management**: Auto-detect connected Jetson devices in recovery mode
+- **Configuration Profiles**: Pre-built profiles for Production, Developer, and AI Workstation setups
+- **Real-time Progress**: Advanced progress tracking with detailed logs
+- **Command Palette**: Quick actions with Cmd+K
+- **Analytics Dashboard**: Track flash statistics and performance metrics
+- **Cross-platform**: Works on Windows, macOS, and Linux
+
+## 🛠 Tech Stack
+
+- **Frontend**: React 18 + TypeScript + Tailwind CSS + Framer Motion
+- **Backend**: Rust (Tauri) for native performance
+- **UI**: Glassmorphic design with premium animations
+- **Build**: Vite for fast development
+
+## 📦 Installation
+
+### Prerequisites
+- Node.js 18+ 
+- Rust (install from https://rustup.rs/)
+
+### Setup
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## 🎯 Usage
+
+### Modern Premium App (Recommended)
+```bash
+npm run dev
+```
+
+### Legacy Python Version (Backup)
+```bash
+python3 main.py
+```
+
+---
+
+# Original Cordatus Flashing Utility
 
 ## Overview
 This project provides a utility for flashing a wide range of Jetson devices, ranging from Jetson Nano to Jetson AGX Orin, with support for JetPack versions ranging from 4.6.1 - L4T 32.7.1 up to 6.0 - L4T 36.3. The utility can flash storage devices including NVMe SSD and Micro SD cards.

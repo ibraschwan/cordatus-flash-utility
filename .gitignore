@@ -1,1 +1,4 @@
 __pycache__/
+node_modules/
+.claude/
+src-tauri/target/debug/*

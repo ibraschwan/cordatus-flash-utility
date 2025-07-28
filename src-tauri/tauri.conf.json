@@ -1,0 +1,81 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "productName": "CFU - Cordatus Flash Utility",
+  "version": "1.0.0",
+  "identifier": "ai.cordatus.flash-utility",
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "title": "CFU - Cordatus Flash Utility",
+        "width": 1400,
+        "height": 900,
+        "minWidth": 1000,
+        "minHeight": 600,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true,
+        "decorations": true,
+        "alwaysOnTop": false,
+        "skipTaskbar": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run dev",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "DeveloperTool",
+    "copyright": "© 2024 İbrahim Çoban",
+    "shortDescription": "Premium Jetson flashing tool",
+    "longDescription": "CFU - Cordatus Flash Utility is a premium, modern desktop application for flashing NVIDIA Jetson devices with real-time progress tracking, container management, and comprehensive device support.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": ["../data/template.csv", "../data/urls.sh", "../flash_cordatus.sh"],
+    "externalBin": []
+  },
+  "plugins": {
+    "shell": {
+      "all": false,
+      "execute": true,
+      "sidecar": false,
+      "open": true
+    },
+    "dialog": {
+      "all": false,
+      "ask": true,
+      "confirm": true,
+      "message": true,
+      "open": true,
+      "save": true
+    },
+    "fs": {
+      "all": false,
+      "readFile": true,
+      "writeFile": true,
+      "readDir": true,
+      "copyFile": true,
+      "createDir": true,
+      "removeDir": true,
+      "removeFile": true,
+      "renameFile": true,
+      "exists": true
+    },
+    "notification": {
+      "all": true
+    }
+  }
+}

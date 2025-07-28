@@ -1,0 +1,37 @@
+[package]
+name = "cordatus-flash-utility"
+version = "1.0.0"
+description = "CFU - Cordatus Flash Utility - Premium Jetson flashing tool"
+authors = ["İbrahim Çoban <ibrahim@cordatus.ai>"]
+license = "MIT"
+repository = "https://github.com/cordatus/flash-utility"
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2.0", features = [] }
+
+[dependencies]
+tauri = { version = "2.0", features = [] }
+tauri-plugin-shell = "2.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] }
+anyhow = "1.0"
+log = "0.4"
+env_logger = "0.10"
+csv = "1.2"
+regex = "1.10"
+rusb = "0.9"
+serialport = "4.2"
+sys-info = "0.9"
+uuid = { version = "1.0", features = ["v4"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-fs = "2.0"
+tauri-plugin-dialog = "2.0"
+tauri-plugin-notification = "2.0"
